@@ -9,15 +9,22 @@ public class Test extends Thread {
   @Override
   public void run() {
     int i=0;
-    while(i < 10) {
+    // while(i < 10) {
+      try {
+        Thread.sleep(5000);
+      } catch (InterruptedException e) {
+        // TODO Auto-generated catch block
+        // e.printStackTrace();
+        System.out.println("Interrupted!!!");
+      }
       System.out.println(Thread.currentThread().getName() + " is running " + i);
 
       // .yield() provides a hint to the scheduler that the current thread is willing to give the CPU time to other threads running.
       // It is just a hint and not mandatory that it will happen that other threads get the CPU time.
       Thread.yield();
-      
+
       i++;
-    }
+    // }
   }
 
   public static void main(String[] args) throws Exception {
@@ -35,6 +42,11 @@ public class Test extends Thread {
     t1.start();
     t2.start();
     
+    // .interrupt() interrupts the thread and stops the thread from doing the current task.
+    //  Ex: if the Thread is sleeping, then .interrupt() will stop the Thread from sleeping, so the Thread will continue to do it's next work.
+    t1.interrupt();
+    System.out.println("Status of " + t1.getName() + " after interruption: " + t1.getState());
+
     // .setName() to change the name of the thread running
     t1.setName("T1x");
 
@@ -52,10 +64,10 @@ public class Test extends Thread {
     // 4. TIMED_WAITING -> Thread is waiting for a set amount of time
     // 5. TERMINATED -> Thread has finished executing and has been terminated
     
-    Thread.sleep(5);
+
+    Thread.sleep(50);
     System.out.println(t1.getState());
     System.out.println(t2.getState());
-
     
     // .join() stops the current Thread from executing further until the spun Thread completes executing and it joins back to the current Thread.
     // t1.join();
